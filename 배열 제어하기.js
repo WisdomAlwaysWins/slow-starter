@@ -10,6 +10,9 @@
 */
 
 const solution = (arr) => {
+	// 1. 중복값 제거를 위해 Set
+	// 2. 스프레드 연산자로 다시 배열로 만듦
+	// 3. sort()로 내림차순 정렬
 	return [...new Set(arr)].sort((a, b) => b - a);
 };
 
