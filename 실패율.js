@@ -43,16 +43,21 @@ function solution(N, stages) {
 	return result;
 }
 
-function solution1(N, stages) { // 간결한 코드, 근데 실행시간은 내 코드보다는 오래 걸림
-	let result = [];
-
-	for (let i = 1 ; i <= N ; i++){ // for문 안에 filter() -> O(N^2)
-		let reach = stages.filter((x => x >= i)).length;
-		let curr = stages.filter (x => x === i).length;
-		result.push([i, curr/reach]);
+function solution1(N, stages) { // 배열 2개 대신 => object 활용
+	let challenger = Array(N+2).fill(0);
+	let fails = {}
+	let total = stages.length;
+	for (stage of stages) {
+		challenger[stage] += 1;
 	}
-	result.sort((a, b) => b[1] - a[1]);
-	return result.map(x => x[0]);
+	for ( let i = 1 ; i < N+1 ; i++){
+		if (challenger[i] == 0 ) fails[i] = 0;
+		else {
+			fails[i] = challenger[i] / total;
+			total -= challenger[i];
+		}
+	}
+	return Object.entries(fails).sort((a, b) => b[1] - a[1]).map(([key, value]) => parseInt(key));
 }
 
-console.log(solution1(4, [3, 3, 3, 3, 3]));
+console.log(solution1(5, [2, 1, 2, 6, 2, 4, 3, 3]));
